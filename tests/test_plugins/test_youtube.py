@@ -19,7 +19,6 @@ class TestYoutubePlugin(unittest.TestCase):
     
     @patch('plugins.youtube.app_emailharvester')
     def test_search(self, mock_app_emailharvester):
-        all_emails = []
 
         mock_app_emailharvester.init = MagicMock()
         mock_app_emailharvester.process = MagicMock()
