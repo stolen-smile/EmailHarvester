@@ -20,7 +20,8 @@ class TestTwitterPlugin(unittest.TestCase):
 
     @patch('plugins.twitter.app_emailharvester')
     def test_search(self, mock_app_emailharvester):
-        mock_app_emailharvester.init = MagicMock()
+        mock_app_emailharvester.show_message = MagicMock()
+        mock_app_emailharvester.init_search = MagicMock()
         mock_app_emailharvester.process = MagicMock()
         mock_app_emailharvester.get_emails = MagicMock(side_effect=[
             ['22@email.com', 'john.doe@email.com'],
