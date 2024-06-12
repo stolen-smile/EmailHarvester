@@ -19,7 +19,7 @@ class TestEmailHarvester(unittest.TestCase):
         self.emailHarvester.register_plugin('test_method', {'function': mock_function})
 
         self.assertIn('test_method', self.emailHarvester.plugins)
-        self.assertEqual(self.emailHarvester.plugins['test_method'], {'function': mock_function})
+        self.assertEqual({'function': mock_function}, self.emailHarvester.plugins['test_method'])
 
     def test_get_plugins(self):
         mock_function1 = MagicMock()
@@ -46,14 +46,14 @@ class TestEmailHarvester(unittest.TestCase):
 
         self.emailHarvester.init_search(url, word, limit, counterInit, counterStep, engineName)
 
-        self.assertEqual(self.emailHarvester.url, url)
-        self.assertEqual(self.emailHarvester.word, word)
-        self.assertEqual(self.emailHarvester.limit, limit)
-        self.assertEqual(self.emailHarvester.counter, counterInit)
-        self.assertEqual(self.emailHarvester.step, counterStep)
-        self.assertEqual(self.emailHarvester.activeEngine, engineName)
-        self.assertEqual(self.emailHarvester.results, "")
-        self.assertEqual(self.emailHarvester.totalresults, "")
+        self.assertEqual(url, self.emailHarvester.url)
+        self.assertEqual(word, self.emailHarvester.word)
+        self.assertEqual(limit, self.emailHarvester.limit)
+        self.assertEqual(counterInit, self.emailHarvester.counter)
+        self.assertEqual(counterStep, self.emailHarvester.step)
+        self.assertEqual(engineName, self.emailHarvester.activeEngine)
+        self.assertEqual("",self.emailHarvester.results)
+        self.assertEqual("", self.emailHarvester.totalresults)
 
     @patch('requests.get')
     def test_do_search(self, mock_get):
@@ -70,8 +70,8 @@ class TestEmailHarvester(unittest.TestCase):
 
         expected_url = url.format(counter = '0', word = word)
         mock_get.assert_called_once_with(expected_url, headers={'User-Agent': self.userAgent})
-        self.assertEqual(self.emailHarvester.results, response_content)
-        self.assertEqual(self.emailHarvester.totalresults, response_content)
+        self.assertEqual(response_content, self.emailHarvester.results)
+        self.assertEqual(response_content, self.emailHarvester.totalresults)
 
     @patch('time.sleep', return_value = None)
     @patch('requests.get')
@@ -88,16 +88,16 @@ class TestEmailHarvester(unittest.TestCase):
         self.emailHarvester.init_search(url, word, 20, 0, 10, "ExampleEngine")
         self.emailHarvester.process()
 
-        self.assertEqual(mock_get.call_count, 2)
-        self.assertEqual(self.emailHarvester.counter, 20)
-        self.assertEqual(self.emailHarvester.totalresults, response_content * 2)
+        self.assertEqual(2, mock_get.call_count)
+        self.assertEqual(20, self.emailHarvester.counter)
+        self.assertEqual(response_content * 2, self.emailHarvester.totalresults)
 
     def test_get_emails(self):
         self.emailHarvester.totalresults = "Contact us at info@example.com and support@example.com"
         self.emailHarvester.word = "example.com"
         emails = self.emailHarvester.get_emails()
         expected_emails = ["info@example.com", "support@example.com"]
-        self.assertEqual(set(emails), set(expected_emails))
+        self.assertEqual(set(expected_emails), set(emails))
 
 if __name__ == '__main__':
     unittest.main()
