@@ -3,7 +3,6 @@ from unittest.mock import MagicMock, patch
 import sys
 import os
 
-# Add the root directory of your project to the Python path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 
 from plugins.googleplus import Plugin, search
@@ -33,7 +32,7 @@ class TestGooglePlusPlugin(unittest.TestCase):
         mock_app_emailharvester.process.assert_called_once()
         mock_app_emailharvester.get_emails.assert_called_once()
 
-        self.assertEqual(result,['john_doe@email.com'])
+        self.assertEqual(['john_doe@email.com'], result)
 
 if __name__ == '__main__':
     unittest.main()
